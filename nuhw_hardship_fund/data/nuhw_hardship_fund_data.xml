@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <!-- Shared across companies (company_id unset), same convention as
+         nonprofit_base's own Fund analytic accounts - this module reuses
+         that pattern without depending on that repo. -->
+    <record id="analytic_plan_hardship_fund" model="account.analytic.plan">
+        <field name="name">NUHW Hardship Fund</field>
+        <field name="description">The Union's own member-assistance fund -
+            not a contractual benefit, so not governed by the CBA.</field>
+    </record>
+    <record id="analytic_account_hardship_fund" model="account.analytic.account">
+        <field name="company_id" eval="False" />
+        <field name="name">NUHW Hardship Fund</field>
+        <field name="code">HSF</field>
+        <field name="plan_id" ref="analytic_plan_hardship_fund" />
+    </record>
+</odoo>

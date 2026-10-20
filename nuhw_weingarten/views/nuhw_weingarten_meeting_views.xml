@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="nuhw_weingarten_meeting_view_form" model="ir.ui.view">
+        <field name="name">nuhw.weingarten_meeting.form</field>
+        <field name="model">nuhw.weingarten_meeting</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="requested,scheduled,completed" />
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not release_requested_late">
+                        Release was requested less than 48 hours before this
+                        meeting (Article 7.3).
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id" />
+                            <field name="unit_id" />
+                            <field name="subject" />
+                        </group>
+                        <group>
+                            <field name="steward_ids" widget="many2many_tags" />
+                            <field name="management_rep" />
+                            <field name="location" />
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="request_date" />
+                        </group>
+                        <group>
+                            <field name="scheduled_date" />
+                            <field name="release_requested_late" />
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="What actually happened..." />
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="nuhw_weingarten_meeting_view_list" model="ir.ui.view">
+        <field name="name">nuhw.weingarten_meeting.list</field>
+        <field name="model">nuhw.weingarten_meeting</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="release_requested_late">
+                <field name="scheduled_date" />
+                <field name="partner_id" />
+                <field name="unit_id" />
+                <field name="steward_ids" widget="many2many_tags" />
+                <field name="state" widget="badge" />
+                <field name="release_requested_late" column_invisible="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="nuhw_weingarten_meeting_view_search" model="ir.ui.view">
+        <field name="name">nuhw.weingarten_meeting.search</field>
+        <field name="model">nuhw.weingarten_meeting</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" />
+                <field name="steward_ids" />
+                <field name="unit_id" />
+                <filter name="late_release" string="Late Release Request"
+                        domain="[('release_requested_late', '=', True)]" />
+                <group>
+                    <filter name="group_by_unit" string="Unit"
+                            context="{'group_by': 'unit_id'}" />
+                    <filter name="group_by_state" string="Status"
+                            context="{'group_by': 'state'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="nuhw_weingarten_meeting_action" model="ir.actions.act_window">
+        <field name="name">Weingarten Meetings</field>
+        <field name="res_model">nuhw.weingarten_meeting</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

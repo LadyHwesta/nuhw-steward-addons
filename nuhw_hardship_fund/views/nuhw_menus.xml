@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <menuitem id="menu_nuhw_hardship_requests"
+              name="Hardship Fund"
+              parent="nuhw_base.menu_nuhw_root"
+              action="nuhw_hardship_request_action"
+              sequence="6"
+              groups="nuhw_base.group_nuhw_steward" />
+</odoo>

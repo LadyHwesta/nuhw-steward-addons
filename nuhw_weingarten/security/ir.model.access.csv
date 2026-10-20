@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nuhw_weingarten_meeting_steward,nuhw.weingarten_meeting steward,model_nuhw_weingarten_meeting,nuhw_base.group_nuhw_steward,1,1,1,1

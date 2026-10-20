@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Union fields on the Membership page membership.view_partner_form -->
+    <!-- already adds, same spot club_membership hooks in its own fields. -->
+    <record id="view_partner_form_nuhw" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="membership.view_partner_form" />
+        <field name="arch" type="xml">
+            <field name="membership_category_ids" position="after">
+                <field name="nuhw_unit_id" />
+                <field name="job_classification" />
+                <field name="shift" />
+                <field name="hire_date" />
+                <field name="is_steward" />
+                <field name="steward_unit_ids"
+                       invisible="not is_steward"
+                       widget="many2many_tags" />
+                <field name="steward_designated_date"
+                       invisible="not is_steward" />
+                <button name="action_mark_dues_current" type="object"
+                        string="Mark Dues Current"
+                        help="Create/refresh one year of a paid membership line without going through an invoice - this CBA's dues are deducted via payroll check-off, not invoiced through Odoo."
+                        class="oe_stat_button" icon="fa-check-circle" />
+            </field>
+        </field>
+    </record>
+
+    <!-- ============ Stewards roster ============ -->
+    <record id="steward_roster_view_list" model="ir.ui.view">
+        <field name="name">steward.roster.list</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <list string="Stewards">
+                <field name="name" />
+                <field name="nuhw_unit_id" />
+                <field name="steward_unit_ids" widget="many2many_tags" />
+                <field name="shift" />
+                <field name="steward_designated_date" />
+                <field name="email" widget="email" />
+                <field name="phone" class="o_force_ltr" optional="show" />
+            </list>
+        </field>
+    </record>
+
+    <record id="steward_roster_view_search" model="ir.ui.view">
+        <field name="name">steward.roster.search</field>
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <search string="Stewards">
+                <field name="name" />
+                <field name="nuhw_unit_id" />
+                <field name="steward_unit_ids" />
+                <filter name="no_unit" string="No Unit Represented"
+                        domain="[('steward_unit_ids', '=', False)]" />
+                <group>
+                    <filter name="group_by_unit" string="Unit"
+                            context="{'group_by': 'nuhw_unit_id'}" />
+                    <filter name="group_by_shift" string="Shift"
+                            context="{'group_by': 'shift'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="steward_roster_action" model="ir.actions.act_window">
+        <field name="name">Stewards</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_steward', '=', True)]</field>
+        <field name="context">{'default_is_steward': True}</field>
+        <field name="search_view_id" ref="steward_roster_view_search" />
+        <field name="view_id" ref="steward_roster_view_list" />
+    </record>
+</odoo>

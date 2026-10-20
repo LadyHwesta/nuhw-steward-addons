@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Article 2 - Recognition: the two real bargaining units this CBA -->
+    <!-- covers. Kept as records, not a hardcoded Selection, since more -->
+    <!-- granular department tracking may be added later. -->
+    <record id="unit_service_technical" model="nuhw.unit">
+        <field name="name">Service and Technical Unit</field>
+        <field name="code">S&amp;T</field>
+    </record>
+    <record id="unit_professionals" model="nuhw.unit">
+        <field name="name">Professionals Unit</field>
+        <field name="code">PROF</field>
+        <field name="description">Medical Laboratory Scientist, Occupational
+Therapist, Physical Therapist, Psychiatric Services Liaison, Speech
+Language Pathologist, Social Worker MSW, Social Worker LCSW, Lead Speech
+Therapist, Lead Physical Therapist, Outpatient Behavioral Health RN
+(Article 2.4).</field>
+    </record>
+
+    <!-- A single, non-invoiced membership product so action_mark_dues_current -->
+    <!-- has something to point membership.membership_line.membership_id at - -->
+    <!-- this CBA's dues come via payroll check-off (Article 8), never an -->
+    <!-- Odoo invoice, so this product is never actually sold. -->
+    <record id="product_template_nuhw_dues" model="product.template">
+        <field name="name">NUHW Membership (payroll check-off, not invoiced)</field>
+        <field name="type">service</field>
+        <field name="membership" eval="True" />
+        <field name="membership_date_from" eval="DateTime.today()" />
+        <field name="membership_date_to" eval="DateTime.today() + relativedelta(years=1)" />
+        <field name="sale_ok" eval="False" />
+        <field name="purchase_ok" eval="False" />
+        <field name="list_price">0.0</field>
+    </record>
+</odoo>

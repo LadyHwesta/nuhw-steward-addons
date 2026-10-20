@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="nuhw_grievance_view_form" model="ir.ui.view">
+        <field name="name">nuhw.grievance.form</field>
+        <field name="model">nuhw.grievance</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="step" widget="statusbar"
+                           statusbar_visible="informal_step1,hr_manager,area_director,arbitration" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="partner_id" placeholder="Grievant" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="unit_id" />
+                            <field name="steward_id" />
+                            <field name="filed_by" />
+                            <field name="grievance_type" />
+                            <field name="cba_article" />
+                        </group>
+                        <group>
+                            <field name="incident_date" />
+                            <field name="date_filed" />
+                            <field name="response_deadline_date" />
+                            <field name="outcome" />
+                            <field name="state" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" />
+                        </page>
+                        <page string="Notes">
+                            <field name="notes" />
+                        </page>
+                        <page string="Weingarten Meetings">
+                            <field name="weingarten_meeting_ids">
+                                <list>
+                                    <field name="scheduled_date" />
+                                    <field name="partner_id" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+
+    <record id="nuhw_grievance_view_list" model="ir.ui.view">
+        <field name="name">nuhw.grievance.list</field>
+        <field name="model">nuhw.grievance</field>
+        <field name="arch" type="xml">
+            <list decoration-danger="is_overdue">
+                <field name="date_filed" />
+                <field name="partner_id" />
+                <field name="unit_id" />
+                <field name="grievance_type" />
+                <field name="step" widget="badge" />
+                <field name="response_deadline_date" />
+                <field name="outcome" />
+                <field name="state" />
+                <field name="is_overdue" column_invisible="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="nuhw_grievance_view_search" model="ir.ui.view">
+        <field name="name">nuhw.grievance.search</field>
+        <field name="model">nuhw.grievance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" />
+                <field name="steward_id" />
+                <field name="unit_id" />
+                <filter name="open" string="Open" domain="[('state', '=', 'open')]" />
+                <filter name="overdue" string="Deadline Passed"
+                        domain="[('response_deadline_date', '&lt;', context_today().strftime('%Y-%m-%d')),
+                                 ('state', '=', 'open')]" />
+                <group>
+                    <filter name="group_by_step" string="Step"
+                            context="{'group_by': 'step'}" />
+                    <filter name="group_by_type" string="Type"
+                            context="{'group_by': 'grievance_type'}" />
+                    <filter name="group_by_steward" string="Steward"
+                            context="{'group_by': 'steward_id'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="nuhw_grievance_action" model="ir.actions.act_window">
+        <field name="name">Grievances</field>
+        <field name="res_model">nuhw.grievance</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_open': 1}</field>
+    </record>
+</odoo>

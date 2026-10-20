@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="nuhw_weingarten_meeting_view_form_grievance" model="ir.ui.view">
+        <field name="name">nuhw.weingarten_meeting.form.grievance</field>
+        <field name="model">nuhw.weingarten_meeting</field>
+        <field name="inherit_id"
+               ref="nuhw_weingarten.nuhw_weingarten_meeting_view_form" />
+        <field name="arch" type="xml">
+            <field name="location" position="after">
+                <field name="grievance_id" />
+            </field>
+        </field>
+    </record>
+</odoo>
